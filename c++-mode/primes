@@ -1,0 +1,45 @@
+# -*- mode: snippet -*-
+# name: primes
+# uuid: primes
+# key: primes
+# condition: t
+# --
+template <class T, T MAX>
+class Primes {
+  static constexpr std::array<bool, MAX + 1> _isPrime = []() {
+    std::array<bool, MAX + 1> isPrime;
+    fill(isPrime.begin(), isPrime.end(), true);
+    isPrime[0] = isPrime[1] = false;
+    for (T i = 4; i <= MAX; i += 2)
+      isPrime[i] = false;
+    for (T i = 3; i * i <= MAX; i += 2) {
+      if (isPrime[i])
+        for (T j = i * i; j <= MAX; j += i)
+          isPrime[j] = false;
+    }
+    return isPrime;
+  }();
+
+  static constexpr int _primeCount =
+      accumulate(_isPrime.begin(), _isPrime.end(), 0);
+
+  static constexpr std::array<T, _primeCount> _primes = []() {
+    std::array<T, _primeCount> primes;
+    for (T i = 0, j = 0; i <= MAX; ++i) {
+      if (_isPrime[i])
+        primes[j++] = i;
+    }
+    return primes;
+  }();
+
+ public:
+  bool isPrime(T n) { return _isPrime[n]; }
+
+  int primeCount() { return _primeCount; }
+
+  auto& primes() { return _primes; }
+
+  auto begin() { return _primes.begin(); }
+
+  auto end() { return _primes.end(); }
+};

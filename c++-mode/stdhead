@@ -1,0 +1,16 @@
+# -*- mode: snippet -*-
+# name: stdhead
+# uuid: stdhead
+# key: stdhead
+# condition: t
+# --
+#include <bits/stdc++.h>
+
+using namespace std;
+
+const static auto init = [] {
+  std::ios::sync_with_stdio(false);
+  std::cin.tie(nullptr);
+  std::cout.tie(nullptr);
+  return nullptr;
+}();

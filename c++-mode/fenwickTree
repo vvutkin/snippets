@@ -1,0 +1,124 @@
+# -*- mode: snippet -*-
+# name: fenwickTree
+# uuid: fenwickTree
+# key: fenwickTree
+# condition: t
+# --
+template <typename C>
+concept any_iterable_collection = requires(C c) {
+  { c.begin() } -> std::forward_iterator;
+  { c.end() } -> std::forward_iterator;
+  { const_cast<const C&>(c).begin() } -> std::forward_iterator;
+  { const_cast<const C&>(c).end() } -> std::forward_iterator;
+};
+
+template <typename T>
+  requires std::is_integral_v<T>
+class FenwickTree {
+ protected:
+  size_t LSOne(size_t S) { return S & -S; }
+
+ private:
+  std::vector<T> ft;
+
+ public:
+  FenwickTree(size_t m) { ft.assign(m + 1, 0); }
+
+  template <typename Container>
+    requires any_iterable_collection<Container> &&
+             std::is_convertible_v<typename Container::value_type, T>
+  void build(const Container& f) {
+    size_t m = f.size();
+    ft.assign(m + 1, 0);
+    size_t i = 1;
+    for (auto it = std::begin(f); it != std::end(f); it = std::next(it), ++i) {
+      ft[i] += *it;
+      if (i + LSOne(i) <= m)
+        ft[i + LSOne(i)] += ft[i];
+    }
+  }
+
+  template <typename Container>
+    requires any_iterable_collection<Container> &&
+             std::is_convertible_v<typename Container::value_type, T>
+  FenwickTree(Container& f) {
+    build(f);
+  }
+
+  template <typename Container>
+    requires any_iterable_collection<Container> &&
+             std::is_convertible_v<typename Container::value_type, T>
+  FenwickTree(size_t m, const Container& s) {
+    std::vector<T> f(m + 1, 0);
+    for (auto& val : s)
+      ++f[val];
+    build(f);
+  }
+
+  T rsq(size_t j) {
+    T sum = 0;
+    for (; j; j -= LSOne(j))
+      sum += ft[j];
+    return sum;
+  }
+
+  T rsq(size_t i, size_t j) { return rsq(j) - rsq(i - 1); }
+
+  void update(size_t i, T v) {
+    for (; i < ft.size(); i += LSOne(i))
+      ft[i] += v;
+  }
+
+  size_t select(T k) {
+    size_t p = 1;
+    while (p * 2 < ft.size())
+      p *= 2;
+    size_t i = 0;
+    while (p) {
+      if (k > ft[i + p]) {
+        k -= ft[i + p];
+        i += p;
+      }
+      p /= 2;
+    }
+    return i;
+  }
+};
+
+template <typename T>
+  requires std::is_integral_v<T>
+class RUPQ {
+ private:
+  FenwickTree<T> ft;
+
+ public:
+  RUPQ(size_t m) : ft(FenwickTree<T>(m)) {}
+
+  void range_update(size_t left, size_t right, T v) {
+    ft.update(left, v);
+    ft.update(right + 1, -v);
+  }
+
+  T point_query(size_t i) { return ft.rsq(i); }
+};
+
+template <typename T>
+  requires std::is_integral_v<T>
+class RURQ {
+ private:
+  RUPQ<T> rupq;
+  FenwickTree<T> purq;
+
+ public:
+  RURQ(int m) : rupq(RUPQ<T>(m)), purq(FenwickTree<T>(m)) {}
+
+  void range_update(size_t ui, size_t uj, T v) {
+    rupq.range_update(ui, uj, v);
+    purq.update(ui, v * (ui - 1));
+    purq.update(uj + 1, -v * uj);
+  }
+
+  T rsq(size_t j) { return rupq.point_query(j) * j - purq.rsq(j); }
+
+  T rsq(size_t i, size_t j) { return rsq(j) - rsq(i - 1); }
+};
