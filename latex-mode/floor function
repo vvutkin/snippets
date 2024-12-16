@@ -1,7 +1,7 @@
 # -*- mode: snippet -*-
-# name: limsup
-# key: limsup
+# name: floor function
+# key: floor
 # condition: (and (texmathp) 'auto)
 # group: math
 # --
-\\limsup_{${1:n} \\to ${2:\\infty}} $0
+\\left\\lfloor $1 \\right\\rfloor $0

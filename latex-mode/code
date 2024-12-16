@@ -3,6 +3,6 @@
 # key: code
 # uuid: code
 # --
-\begin{lstlisting}
-${0:`%`}
+\begin{lstlisting}${1:[language=${2:Matlab}]}
+$0
 \end{lstlisting}
