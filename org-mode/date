@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: date
+# uuid:
+# key: date
+# condition: t
+# --
+\\( d_{$1}/m_{$1}/y_{$1} \\)$0

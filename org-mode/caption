@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: caption
+# uuid: caption
+# key: caption
+# condition: t
+# --
+#+caption: $0

@@ -1,0 +1,41 @@
+# -*- mode: snippet -*-
+# name: disjointSet
+# uuid: disjointSet
+# key: disjointSet
+# condition: t
+# --
+class DisjointSet {
+  std::vector<int> parent;
+  std::vector<int> size;
+  int n;
+  int numComponents;
+
+public:
+  DisjointSet(int n) : n(n) {
+    parent = std::vector<int>(n);
+    iota(parent.begin(), parent.end(), 0);
+    size = std::vector<int>(n, 1);
+    numComponents = n;
+  }
+
+  int find(int u) {
+    int parU = parent[u];
+    while (u != (parU = parent[u]))
+      u = parent[u] = parent[parU];
+    return u;
+  }
+
+  void merge(int u, int v) {
+    u = find(u);
+    v = find(v);
+    if (u == v)
+      return;
+    if (size[u] < size[v])
+      std::swap(u, v);
+    parent[v] = u;
+    size[u] += size[v];
+    --numComponents;
+  }
+
+  int getClusterSize(int u) { return size[find(u)]; }
+};
