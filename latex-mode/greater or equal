@@ -1,7 +1,7 @@
 # -*- mode: snippet -*-
-# name: limsup
-# key: limsup
+# name: greater or equal
+# key: geq
 # condition: (and (texmathp) 'auto)
 # group: math
 # --
-\\limsup_{${1:n} \\to ${2:\\infty}} $0
+\\ge

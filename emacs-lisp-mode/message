@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
 # name: message
-# key: m
-# uuid: m
+# key: msg
+# uuid: msg
 # --
-(message "${1:`%`}"$0)
+(message ${1:(format "$2")})$0

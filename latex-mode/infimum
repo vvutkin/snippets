@@ -1,7 +1,7 @@
 # -*- mode: snippet -*-
-# name: limsup
-# key: limsup
+# name: infimum
+# key: inf
 # condition: (and (texmathp) 'auto)
 # group: math
 # --
-\\limsup_{${1:n} \\to ${2:\\infty}} $0
+\\inf_{$1 \\in $2} $0
