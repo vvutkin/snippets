@@ -5,12 +5,7 @@
 # condition: t
 # --
 #include <bits/stdc++.h>
+#include <fmt/core.h>
+#include <fmt/ranges.h>
 
 using namespace std;
-
-const static auto init = [] {
-  std::ios::sync_with_stdio(false);
-  std::cin.tie(nullptr);
-  std::cout.tie(nullptr);
-  return nullptr;
-}();
