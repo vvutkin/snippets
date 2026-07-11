@@ -1,6 +1,6 @@
 # key: basict
 # group: skeleton
-# name: \documentclass{article} ...
+# name: \documentclass{article} (basic)
 # --
 \documentclass[11pt]{article}
 
